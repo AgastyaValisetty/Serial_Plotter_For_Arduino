@@ -37,7 +37,7 @@ namespace Test_3
             Comm.SelectedIndex = 0;
             DisconnectBtn.Enabled = false;
 
-            
+            DrawSignCurve();
 
 
             if (serialPort1.IsOpen && CanCheck == true)
@@ -159,7 +159,7 @@ namespace Test_3
 
 
 
-                    PointPair _pointPair = new PointPair(_x, serialPort1.ReadByte());
+                    PointPair _pointPair = new PointPair(_x, _y);
                     _pointPairList.Add(_pointPair);
                 }
             }
@@ -168,6 +168,7 @@ namespace Test_3
 
             LineItem lineItem = GraphPane.AddCurve("Sine Curve", _pointPairList, Color.Red, SymbolType.None);
             zedGraphControl1.AxisChange();
+            zedGraphControl1.Refresh();
 
 
         }
@@ -217,17 +218,18 @@ namespace Test_3
                 label1.Text = "false";
             }
 
-            if (serialPort1.IsOpen && CanCheck == true)
+            if (serialPort1.IsOpen)
             {
-                _y = Convert.ToDouble(serialPort1.ReadLine());
-                
+                getvalue = serialPort1.ReadLine();
+                double.TryParse(getvalue, out _y);
                
+
             }
             else
             {
                 //thinking wut to keep here //
 
-                if (_y == null)
+                if (_y == 0)
                 {
                     NoOfTrys++;
 
@@ -269,6 +271,8 @@ namespace Test_3
         {
             CanCheck = true;
         }
+
+     
     }
     }
     
